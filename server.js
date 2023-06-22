@@ -48,7 +48,7 @@ app.get("/success", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
-r;
+
 app.post("/register", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -69,5 +69,5 @@ app.post("/register", async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Le serveur est en cours d'exécution sur le port 3000");
+  console.log("Le serveur est en cours d'exécution sur le port localhost:3000/index.html");
 });
