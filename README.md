@@ -2,4 +2,4 @@
 Membre du projet:
 - [Antoine](https://github.com/AntoineRai)
 - [Alexis](https://github.com/NeriGH)
-- Quentin
+- [Quentin](https://github.com/The-Law59)
