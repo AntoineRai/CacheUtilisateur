@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Connexion utilisateur</title>
+    <title>Page de connexion</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Connexion utilisateur</h1>
+    <h1>Page de connexion</h1>
 
-    <form action="/login" method="POST">
+    <div id="message"></div>
+
+    <form id="loginForm" action="/login" method="POST">
       <label for="username">Nom d'utilisateur :</label>
       <input type="text" id="username" name="username" required /><br /><br />
 
@@ -21,6 +28,27 @@
 
       <input type="submit" value="Se connecter" />
     </form>
+    <button id="logoutButton" class="hidden">Déconnexion</button>
     <a href="index.html"><button>Pas de compte ? S'inscrire</button></a>
+
+    <script>
+      if (document.cookie.includes("sessionId")) {
+        const loginForm = document.getElementById("loginForm");
+        const logoutButton = document.getElementById("logoutButton");
+
+        loginForm.classList.add("hidden");
+        logoutButton.classList.remove("hidden");
+
+        const message = document.getElementById("message");
+        message.textContent = "Vous êtes déjà connecté !";
+
+        logoutButton.addEventListener("click", () => {
+          document.cookie =
+            "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+          window.location.href = "/login";
+        });
+      }
+    </script>
   </body>
 </html>
