@@ -3,25 +3,34 @@ const Redis = require("ioredis");
 // Création d'un client Redis
 const client = new Redis();
 
-// Fonction pour récupérer et afficher tous les utilisateurs avec leur ID
-async function getAllUsers() {
+// Fonction pour récupérer un utilisateur par son nom d'utilisateur
+async function getUserByUsername(username) {
   const userKeys = await client.keys("user:*");
 
-  if (userKeys.length === 0) {
-    console.log("Aucun utilisateur trouvé.");
-    return;
+  for (const key of userKeys) {
+    const userData = await client.hgetall(key);
+
+    if (userData.username === username) {
+      return { id: key.split(":")[1], ...userData };
+    }
   }
 
-  const users = await Promise.all(
-    userKeys.map(async (key) => {
-      const userId = key.split(":")[1];
-      const userData = await client.hgetall(key);
-      return { id: userId, ...userData };
-    })
-  );
-
-  console.log("Utilisateurs :", users);
+  return null; // Utilisateur non trouvé
 }
 
-// Exemple d'utilisation de la fonction getAllUsers
-getAllUsers();
+// Fonction pour créer une session pour un utilisateur
+async function createSession(userId) {
+  const sessionId = generateSessionId();
+  await client.set(`session:${sessionId}`, userId);
+  return sessionId;
+}
+
+// Fonction pour générer un identifiant de session unique
+function generateSessionId() {
+  return Date.now().toString();
+}
+
+module.exports = {
+  getUserByUsername,
+  createSession,
+};
